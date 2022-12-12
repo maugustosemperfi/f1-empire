@@ -1,0 +1,55 @@
+{
+  "name": "f1-home",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/f1-home",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/f1-home",
+        "outputPath": "dist/apps/f1-home"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "apps/f1-home"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "f1-home:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "f1-home:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "f1-home:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "f1-home:build:production"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/f1-home/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": []
+}
