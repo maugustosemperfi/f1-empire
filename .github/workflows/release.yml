@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Deploys'
+        required: true
+        type: choice
+        options:
+          - all
+          - f1-home
+          - f1-track
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - name: Setup Git
+        run: |
+          git config user.name "GitHub Bot"
+          git config user.email "gituser@example.com"
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+      - name: Lint
+        shell: bash
+        run: |
+          PROJECTS=$($(yarn bin)/nx print-affected --type=lib --select=projects --base=origin/main)
+          if [[ "$PROJECTS" ]]; then
+            yarn nx run-many --target=lint --projects="$PROJECTS"
+          else
+            echo "No changes, Skipping lint check."
+          fi
+      - name: Build
+        shell: bash
+        run: |
+          yarn nx run-many --target=build --projects=f1-track,f1-home
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
