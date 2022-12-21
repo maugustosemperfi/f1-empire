@@ -46,6 +46,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: log
+        shell: bash
+        run: |
+          ls
+          ls ../
+          ls ../../
+          ls ../../../
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0.0
         with:
