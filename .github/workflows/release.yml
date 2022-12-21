@@ -49,10 +49,7 @@ jobs:
       - name: log
         shell: bash
         run: |
-          ls
-          ls ../
-          ls ../../
-          ls ../../../
+          ls ./dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
